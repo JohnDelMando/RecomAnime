@@ -7,11 +7,11 @@ anime_genres = db.Table(
     db.Column('genre_id', db.Integer, db.ForeignKey('genre.genre_id'), primary_key=True)
 )
 
-# Association table for anime themes
-anime_themes = db.Table(
-    'anime_themes',
+# Association table for anime tags
+anime_tags = db.Table(
+    'anime_tags',
     db.Column('anime_id', db.Integer, db.ForeignKey('anime.anime_id'), primary_key=True),
-    db.Column('theme_id', db.Integer, db.ForeignKey('theme.theme_id'), primary_key=True)
+    db.Column('tag_id', db.Integer, db.ForeignKey('tag.tag_id'), primary_key=True)
 )
 
 # Anime table
@@ -31,7 +31,7 @@ class Anime(db.Model):
 
     characters = db.relationship('Character', backref='anime', lazy=True)
     genres = db.relationship('Genre', secondary=anime_genres, lazy='subquery', backref=db.backref('animes', lazy=True))
-    themes = db.relationship('Theme', secondary=anime_themes, lazy='subquery', backref=db.backref('animes', lazy=True))
+    tags = db.relationship('Tag', secondary=anime_tags, lazy='subquery', backref=db.backref('animes', lazy=True))
     
     def __repr__(self):
         return f"<Anime {self.anime_name}>"
@@ -53,7 +53,7 @@ class Anime(db.Model):
             'anime_rating': self.anime_rating,
             'anime_score': self.anime_score,
             'genres': [genre.serialize() for genre in self.genres],
-            'themes': [theme.serialize() for theme in self.themes]
+            'tags': [tag.serialize() for tag in self.tags]
         }
 
 # Character table
@@ -100,15 +100,15 @@ class Genre(db.Model):
             'genre_name': self.genre_name
         }
 
-# Theme table
-class Theme(db.Model):
-    __tablename__ = 'theme'
+# Tag table (formerly Theme table)
+class Tag(db.Model):
+    __tablename__ = 'tag'
     
-    theme_id = db.Column(db.Integer, primary_key=True)
-    theme_name = db.Column(db.String(50), nullable=False, unique=True)
+    tag_id = db.Column(db.Integer, primary_key=True)
+    tag_name = db.Column(db.String(50), nullable=False, unique=True)
 
     def __repr__(self):
-        return f"<Theme {self.theme_name}>"
+        return f"<Tag {self.tag_name}>"
 
     def save(self):
         db.session.add(self)
@@ -116,8 +116,8 @@ class Theme(db.Model):
 
     def serialize(self):
         return {
-            'theme_id': self.theme_id,
-            'theme_name': self.theme_name
+            'tag_id': self.tag_id,
+            'tag_name': self.tag_name
         }
 
 # Date table
