@@ -60,6 +60,7 @@ def get_topAnime():
           coverImage {
             large
           }
+          description(asHtml: false) # Include description
         }
       }
     }
@@ -79,7 +80,6 @@ def get_topAnime():
         return jsonify(data)
     else:
         return jsonify({"error": "Failed to fetch data from Anilist API"}), response.status_code
-    
 
 
 # get most popular anime that is releasing in the year, year is hardcoded for now
@@ -99,6 +99,7 @@ def get_popularAnime():
           coverImage {
             large
           }
+          description(asHtml: false) # Include description
         }
       }
     }
@@ -116,7 +117,6 @@ def get_popularAnime():
         return jsonify(data)
     else:
         return jsonify({"error": "Failed to fetch data from Anilist API"}), response.status_code
-    
 
 
 # get anime airing with specific season and year (inputs are: WINTER, FALL, SUMMER, SPRING)
@@ -138,6 +138,7 @@ def get_seasonalAnime():
           coverImage {
             large
           }
+          description(asHtml: false) # Include description
         }
       }
     }
@@ -157,7 +158,6 @@ def get_seasonalAnime():
         return jsonify(data)
     else:
         return jsonify({"error": "Failed to fetch data from Anilist API"}), response.status_code
-    
 
 
 #Get the anime with specific genre
@@ -181,6 +181,7 @@ def get_genreAnime():
           coverImage {
             large
           }
+          description(asHtml: false) # Include description
         }
       }
     }
@@ -200,7 +201,6 @@ def get_genreAnime():
     else:
         return jsonify({"error": "Failed to fetch data from Anilist API"}), response.status_code
 
-    
 
 #Get the anime with specific tag
 @app.route('/api/get_tagAnime', methods=['GET'])
@@ -225,6 +225,7 @@ def get_tagAnime():
           coverImage {
             large
           }
+          description(asHtml: false) # Include description
         }
       }
     }
@@ -243,7 +244,6 @@ def get_tagAnime():
         return jsonify(data)
     else:
         return jsonify({"error": "Failed to fetch data from Anilist API"}), response.status_code
-    
 
 
 # get top anime with multiple value for genre. Example: Genre = Action, Adventure, Fantasy. Postman request URL: ?genre=Action,Fantasy,Adventure
@@ -267,6 +267,7 @@ def get_multgenreAnime():
           coverImage {
             large
           }
+          description(asHtml: false) # Include description
         }
       }
     }
@@ -285,7 +286,6 @@ def get_multgenreAnime():
         return jsonify(data)
     else:
         return jsonify({"error": "Failed to fetch data from Anilist API"}), response.status_code
-
 
 
 # get top anime with multiple value for tag. Example: Tag = Shounen, Super Power. Postman request URL: ?tag=Shounen,Super Power
@@ -311,6 +311,7 @@ def get_multtagAnime():
           coverImage {
             large
           }
+          description(asHtml: false) # Include description
         }
       }
     }
@@ -329,20 +330,19 @@ def get_multtagAnime():
         return jsonify(data)
     else:
         return jsonify({"error": "Failed to fetch data from Anilist API"}), response.status_code
-    
 
 
 # get the top anime of the year
 @app.route('/api/get_yearlyAnime', methods=['GET'])
 def get_yearlyAnime():
-    year = request.args.get('year')
+    year = int(request.args.get('year'))
 
     url = 'https://graphql.anilist.co'
     
     query = '''
-    query ($year: Int, $page: Int, $perPage: Int) {
+    query ($seasonYear: Int, $page: Int, $perPage: Int) {
       Page(page: $page, perPage: $perPage) {
-        media(seasonYear: $year, type: ANIME, sort: [POPULARITY_DESC, SCORE_DESC]) {
+        media(seasonYear: $seasonYear, type: ANIME, sort: [POPULARITY_DESC, SCORE_DESC]) {
           id
           title {
             romaji
@@ -352,13 +352,14 @@ def get_yearlyAnime():
           coverImage {
             large
           }
+          description(asHtml: false) # Include description
         }
       }
     }
     '''
 
     variables = {
-        "year": int(year), 
+        "seasonYear": year,
         "page": 1,
         "perPage": 50  # Limit results to top 50
     }
@@ -370,6 +371,7 @@ def get_yearlyAnime():
         return jsonify(data)
     else:
         return jsonify({"error": "Failed to fetch data from Anilist API"}), response.status_code
+
 
 
 @app.shell_context_processor

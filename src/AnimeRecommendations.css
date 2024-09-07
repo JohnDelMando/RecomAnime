@@ -1,0 +1,25 @@
+.anime-list, .top-100-anime-list {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-around;
+    margin-top: 20px;
+  }
+  
+  .anime-item {
+    width: 250px;
+    margin: 20px;
+    text-align: center;
+  }
+  
+  .anime-item img {
+    width: 100%;
+    height: auto;
+    border-radius: 8px;
+    margin-bottom: 10px;
+  }
+  
+  h2 {
+    text-align: center;
+    margin-top: 50px;
+  }
+  
