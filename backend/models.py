@@ -37,8 +37,12 @@ class Anime(db.Model):
         return f"<Anime {self.anime_name}>"
 
     def save(self):
-        db.session.add(self)
-        db.session.commit()
+        try:
+            db.session.add(self)
+            db.session.commit()
+        except Exception as e:
+            db.session.rollback()
+            print(f"Error saving anime: {e}")
 
     def serialize(self):
         return {
@@ -69,8 +73,12 @@ class Character(db.Model):
         return f"<Character {self.character_name}>"
 
     def save(self):
-        db.session.add(self)
-        db.session.commit()
+        try:
+            db.session.add(self)
+            db.session.commit()
+        except Exception as e:
+            db.session.rollback()
+            print(f"Error saving character: {e}")
 
     def serialize(self):
         return {
@@ -91,8 +99,12 @@ class Genre(db.Model):
         return f"<Genre {self.genre_name}>"
 
     def save(self):
-        db.session.add(self)
-        db.session.commit()
+        try:
+            db.session.add(self)
+            db.session.commit()
+        except Exception as e:
+            db.session.rollback()
+            print(f"Error saving genre: {e}")
 
     def serialize(self):
         return {
@@ -111,8 +123,12 @@ class Theme(db.Model):
         return f"<Theme {self.theme_name}>"
 
     def save(self):
-        db.session.add(self)
-        db.session.commit()
+        try:
+            db.session.add(self)
+            db.session.commit()
+        except Exception as e:
+            db.session.rollback()
+            print(f"Error saving theme: {e}")
 
     def serialize(self):
         return {
@@ -133,8 +149,12 @@ class Date(db.Model):
         return f"<Date {self.date_id}>"
 
     def save(self):
-        db.session.add(self)
-        db.session.commit()
+        try:
+            db.session.add(self)
+            db.session.commit()
+        except Exception as e:
+            db.session.rollback()
+            print(f"Error saving date: {e}")
 
     def serialize(self):
         return {
@@ -155,8 +175,12 @@ class TopAnime(db.Model):
         return f"<TopAnime {self.top_anime_name}>"
 
     def save(self):
-        db.session.add(self)
-        db.session.commit()
+        try:
+            db.session.add(self)
+            db.session.commit()
+        except Exception as e:
+            db.session.rollback()
+            print(f"Error saving top anime: {e}")
 
     def serialize(self):
         return {
